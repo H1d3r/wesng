@@ -86,7 +86,7 @@ class WesException(Exception):
 
 # Application details
 TITLE = 'Windows Exploit Suggester'
-VERSION = 1.05
+VERSION = 1.06
 RELEASE = ''
 WEB_URL = 'https://github.com/bitsadmin/wesng/'
 BANNER = '%s %s ( %s )'
@@ -113,7 +113,8 @@ buildnumbers = OrderedDict([
     (22000, '21H2'), # Windows 11
     (22621, '22H2'),
     (22631, '23H2'),
-    (26100, '24H2')
+    (26100, '24H2'),
+    (26200, '25H2')
 ])
 
 
