@@ -648,6 +648,8 @@ def determine_product(systeminfo):
         productfilter = 'Windows Server %s' % win
     elif win == '2022':
         productfilter = 'Windows Server %s' % win
+    elif win == '2025':
+        productfilter = 'Windows Server %s' % win
     else:
         raise WesException('Failed assessing Windows version {}'.format(win))
 
