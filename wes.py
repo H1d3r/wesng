@@ -11,6 +11,7 @@
 from __future__ import print_function
 
 import sys, csv, re, argparse, os, zipfile, io
+import unicodedata
 import logging
 from collections import Counter, OrderedDict
 import copy
@@ -39,9 +40,12 @@ try:
         return data
 
 except (ImportError, ModuleNotFoundError):
-    # Parse everything as ASCII
+    # Parse everything as UTF-8 (fallback) to preserve non-ASCII like Spanish accents
     def charset_convert(data):
-        data = data.decode('ascii', 'ignore')
+        try:
+            data = data.decode('utf-8', 'ignore')
+        except Exception:
+            data = data.decode('latin-1', 'ignore')
 
         if sys.version_info.major == 2:
             data = data.encode(sys.getfilesystemencoding())
@@ -543,6 +547,12 @@ def mark_superseeded_hotfix(filtered, superseeded, marked):
 # Determine Windows version based on the systeminfo input file provided
 def determine_product(systeminfo):
     systeminfo = charset_convert(systeminfo)
+    # Normalize accents for Spanish/French etc (issue #32)
+    try:
+        systeminfo = unicodedata.normalize('NFKD', systeminfo).encode('ascii', 'ignore').decode('ascii')
+    except Exception:
+        pass
+
 
     # Fixup for 7_sp1_x64_enterprise_fr_systeminfo_powershell.txt
     systeminfo = systeminfo.replace('\xA0', '\x20')
